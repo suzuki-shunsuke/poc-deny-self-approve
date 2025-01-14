@@ -1,0 +1,24 @@
+---
+name: Dismiss self approvals
+on:
+  pull_request_review:
+    types:
+      - submitted
+      - edited
+permissions: {}
+jobs:
+  dismiss:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4.0.0
+        with:
+          persist-credentials: false
+      - uses: aquaproj/aqua-installer@v3.1.0
+        with:
+          aqua_version: v2.42.2
+      - run: deny-self-approve -d
+        env:
+          GITHUB_TOKEN: ${{github.token}}

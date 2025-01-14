@@ -1,0 +1,32 @@
+---
+name: Dismiss self approvals
+on:
+  push:
+    branches:
+      - main
+permissions: {}
+jobs:
+  deploy:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4.0.0
+        with:
+          persist-credentials: false
+      - uses: aquaproj/aqua-installer@v3.1.0
+        with:
+          aqua_version: v2.42.2
+      - run: |
+          env=$(ci-info run)
+          eval "$env"
+          echo "PR_NUMBER=$CI_INFO_PR_NUMBER" >> "$GITHUB_ENV"
+      - run: |
+          if !deny-self-approve --pr "$PR_NUMBER";
+            github-comment post -k deny-self-approve -pr "$PR_NUMBER"
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{github.token}}
+      - run: echo "Deploy"
