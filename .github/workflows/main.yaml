@@ -1,5 +1,5 @@
 ---
-name: Dismiss self approvals
+name: Deploy
 on:
   push:
     branches:
@@ -23,7 +23,7 @@ jobs:
           eval "$env"
           echo "PR_NUMBER=$CI_INFO_PR_NUMBER" >> "$GITHUB_ENV"
       - run: |
-          if !deny-self-approve --pr "$PR_NUMBER";
+          if ! deny-self-approve --pr "$PR_NUMBER"; then
             github-comment post -k deny-self-approve -pr "$PR_NUMBER"
             exit 1
           fi
