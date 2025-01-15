@@ -23,7 +23,7 @@ jobs:
           eval "$env"
           echo "PR_NUMBER=$CI_INFO_PR_NUMBER" >> "$GITHUB_ENV"
       - run: |
-          if ! deny-self-approve --pr "$PR_NUMBER"; then
+          if ! deny-self-approve --pr "$PR_NUMBER" validate; then
             github-comment post -k deny-self-approve -pr "$PR_NUMBER"
             exit 1
           fi
