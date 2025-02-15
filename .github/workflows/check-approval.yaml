@@ -12,4 +12,4 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      - uses: suzuki-sunsuke/deny-self-approve-action@main
+      - uses: suzuki-shunsuke/deny-self-approve-action@main
