@@ -1,5 +1,5 @@
 ---
-name: Dismiss self approvals
+name: Check approval
 on:
   pull_request_review:
     types:
@@ -7,7 +7,7 @@ on:
       - edited
 permissions: {}
 jobs:
-  dismiss:
+  check-approval:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
@@ -18,7 +18,8 @@ jobs:
           persist-credentials: false
       - uses: aquaproj/aqua-installer@e2d0136abcf70b7a2f6f505720640750557c4b33 # v3.1.1
         with:
-          aqua_version: v2.42.2
-      - run: deny-self-approve dismiss
+          aqua_version: v2.44.0
+      - run: |
+          github-comment exec -k deny-self-approve -- deny-self-approve validate --dismiss
         env:
           GITHUB_TOKEN: ${{github.token}}

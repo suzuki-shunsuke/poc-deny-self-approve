@@ -1,11 +1,12 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/suzuki-shunsuke/github-comment/main/json-schema/github-comment.json
 # https://github.com/suzuki-shunsuke/github-comment
-post:
+exec:
   deny-self-approve:
-    template: |
-      # :x: Self approval is forbidden
+    - when: ExitCode != 0
+      template: |
+        # :x: Self approval is forbidden
 
-      {{template "link" .}}
+        {{template "link" .}}
 
-      Approval is required from anyone who did not push commits to the pull request.
+        Approval is required from anyone who did not push commits to the pull request.
