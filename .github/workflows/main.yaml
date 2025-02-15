@@ -17,16 +17,13 @@ jobs:
           persist-credentials: false
       - uses: aquaproj/aqua-installer@e2d0136abcf70b7a2f6f505720640750557c4b33 # v3.1.1
         with:
-          aqua_version: v2.42.2
+          aqua_version: v2.44.0
       - run: |
           env=$(ci-info run)
           eval "$env"
           echo "PR_NUMBER=$CI_INFO_PR_NUMBER" >> "$GITHUB_ENV"
       - run: |
-          if ! deny-self-approve --pr "$PR_NUMBER" validate; then
-            github-comment post -k deny-self-approve -pr "$PR_NUMBER"
-            exit 1
-          fi
+          github-comment exec -k deny-self-approve -pr "$PR_NUMBER" -- deny-self-approve --pr "$PR_NUMBER" validate
         env:
           GITHUB_TOKEN: ${{github.token}}
       - run: echo "Deploy"
