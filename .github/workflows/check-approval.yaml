@@ -4,12 +4,13 @@ on:
   pull_request_review:
     types:
       - submitted
-permissions: {}
 jobs:
   check-approval:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    if: "false"
     permissions:
       pull-requests: write
+      contents: read
     steps:
       - uses: suzuki-shunsuke/deny-self-approve-action@main
