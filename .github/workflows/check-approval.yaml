@@ -13,5 +13,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: suzuki-shunsuke/deny-self-approve-action@feat-ignore-unknown-commit
+        id: deny
         with:
           ignore_not_linked_commit: "true"
+      - run: echo "${{ steps.deny.outputs.has_not_linked_commit }}"
